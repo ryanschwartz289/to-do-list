@@ -17,6 +17,71 @@ function checkNoItems() {
     noItems.hidden = false;
   }
 }
+/**
+ * Saves all current to-do items to localStorage.
+ *
+ * Each item is stored as an object with the following structure:
+ *
+ *
+ * {
+ *   text: string,           // The text entered in the input field
+ *
+ *   isCompleted: boolean    // Whether the item is marked as completed
+ * }
+ *
+ *
+ * Completion is determined by whether the item's button has a grey background.
+ */
+function saveItems() {
+  const items = Array.from(document.querySelectorAll(".item")).map((item) => ({
+    text: item.querySelector("input").value,
+    isCompleted:
+      item.querySelector(".item-button").style.backgroundColor === "grey",
+  }));
+  localStorage.setItem("todoItems", JSON.stringify(items));
+}
+
+/**
+ * Loads to-do items from localStorage and restores them to the DOM.
+ *
+ * For each saved item, it:
+ * - Clones a base item element (`originalItem`)
+ * - Sets the text and completion state
+ * - Adds event listeners to the item's button
+ * - Appends the item to the `itemsContainer`
+ *
+ * Also hides the `noItems` message if any items were loaded.
+ *
+ * Assumes the following variables are defined globally:
+ * - `originalItem`: HTMLElement used as a template for new items
+ * - `itemsContainer`: HTMLElement where items will be appended
+ * - `noItems`: HTMLElement that shows a "no items" message
+ * - `completeItem(button)`: Function to handle item completion logic
+ */
+function loadItems() {
+  const savedItems = localStorage.getItem("todoItems");
+  if (savedItems) {
+    const items = JSON.parse(savedItems);
+    items.forEach((item) => {
+      const newItem = originalItem.cloneNode(true);
+      const input = newItem.querySelector("input");
+      const button = newItem.querySelector(".item-button");
+
+      input.value = item.text;
+      if (item.isCompleted) {
+        button.style.backgroundColor = "grey";
+        newItem.style.opacity = 0.5;
+      }
+
+      button.addEventListener("click", () => completeItem(button));
+      itemsContainer.appendChild(newItem);
+    });
+
+    if (items.length > 0) {
+      noItems.hidden = true;
+    }
+  }
+}
 
 /**
  * Toggles the completion state of a reminder item.
@@ -55,6 +120,7 @@ function completeItem(button) {
     }
   }
   checkNoItems();
+  saveItems(); // Add this line
 }
 
 /**
@@ -72,6 +138,7 @@ function deleteLastItem() {
     focusItem.querySelector("input").focus({ preventScroll: true });
   }
   checkNoItems();
+  saveItems(); // Add this line
 }
 
 /**
@@ -95,6 +162,7 @@ function duplicateItem() {
   setTimeout(() => {
     clonedInput.focus({ preventScroll: true });
   }, 0);
+  saveItems(); // Add this line
 }
 
 function handleKeyClick(event) {
@@ -133,3 +201,20 @@ document.addEventListener("keydown", (event) => handleKeyClick(event));
 completedButtons.forEach((button) => {
   button.addEventListener("click", () => completeItem(button));
 });
+
+// Load items from localStorage when the page is loaded
+window.addEventListener("load", loadItems);
+
+// Save items to localStorage whenever the items are updated
+const observer = new MutationObserver(saveItems);
+observer.observe(itemsContainer, { childList: true, subtree: true });
+
+// Add this with your other event listeners
+document.addEventListener("input", (event) => {
+  if (event.target.classList.contains("input")) {
+    saveItems();
+  }
+});
+
+// Add this line at the end of your file to load items when the page opens
+document.addEventListener("DOMContentLoaded", loadItems);
