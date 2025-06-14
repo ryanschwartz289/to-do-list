@@ -159,4 +159,7 @@ body {
     -webkit-appearance: none; /* Fix Safari input styling */
     margin: 0; /* Remove Safari default margins */
   }
+  no-items {
+    font-size: 18pt;
+  }
 }
