@@ -135,7 +135,7 @@ body {
   #items-container {
     overflow-x: auto;
     width: 95%;
-    -webkit-overflow-scrolling: touch; /* Add smooth scrolling for iOS */
+    overscroll-behavior: auto;
   }
 
   .item {
@@ -157,6 +157,7 @@ body {
     font-size: 16px;
     padding: 2px 0;
     -webkit-appearance: none; /* Fix Safari input styling */
+    appearance: none; /* Standard property */
     margin: 0; /* Remove Safari default margins */
   }
   no-items {
