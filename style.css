@@ -133,13 +133,19 @@ body {
 /* Mobile-specific styles */
 @media screen and (max-width: 768px) {
   #items-container {
-    overflow-x: auto; /* Enable horizontal scroll on mobile */
-    /* -webkit-overflow-scrolling: touch; Smooth scrolling on iOS */
-    width: 95%; /* Wider container on mobile */
+    overflow-x: auto;
+    width: 95%;
   }
 
   .item {
-    min-width: 300px; /* Ensure items don't shrink too small */
-    padding-right: 20px; /* Add some spacing for scrolling */
+    min-width: 300px;
+    padding-right: 20px;
+    align-items: center; /* Add this to center-align button with input */
+    transform: scale(1.2);
+  }
+
+  .input {
+    font-size: 16px;
+    padding: 2px 0; /* Add small padding to match button height */
   }
 }
