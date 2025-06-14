@@ -135,17 +135,28 @@ body {
   #items-container {
     overflow-x: auto;
     width: 95%;
+    -webkit-overflow-scrolling: touch; /* Add smooth scrolling for iOS */
   }
 
   .item {
     min-width: 300px;
     padding-right: 20px;
-    align-items: center; /* Add this to center-align button with input */
+    display: flex;
+    align-items: center;
+    -webkit-transform: scale(1.2); /* Add Safari prefix */
     transform: scale(1.2);
+  }
+
+  .item-button {
+    flex-shrink: 0; /* Prevent button from shrinking */
+    position: relative; /* Add positioning context */
+    top: 1px; /* Fine-tune vertical alignment for Safari */
   }
 
   .input {
     font-size: 16px;
-    padding: 2px 0; /* Add small padding to match button height */
+    padding: 2px 0;
+    -webkit-appearance: none; /* Fix Safari input styling */
+    margin: 0; /* Remove Safari default margins */
   }
 }
