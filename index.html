@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <header><h1>To-Do List</h1></header>
+    <main>
+      <div class="no-items">
+        <p>
+          No items in your to-do list. To add items, press the button in the
+          lower left or press "enter".
+        </p>
+      </div>
+      <div id="items-container">
+        <!-- Add this programmatically in js
+        <div class="item">
+          <button
+            class="item-button"
+            type="button"
+            title="Mark Completed"
+          ></button>
+          <input
+            type="text"
+            placeholder="Input item"
+            name="item"
+            class="input"
+            autocomplete="off"
+          />
+        </div> -->
+      </div>
+      <button type="button" id="new-item-button">
+        <img src="plus-icon.svg" width="18" height="18" alt="plus icon" />
+        New Item
+      </button>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
