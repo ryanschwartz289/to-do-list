@@ -1,7 +1,8 @@
 const completedButtons = document.querySelectorAll(".item-button");
 const itemsContainer = document.getElementById("items-container");
 const duplicateBtn = document.getElementById("new-item-button");
-let noItems = document.querySelector(".no-items");
+const deleteAllItemsButton = document.getElementById("trash-all-button");
+const noItems = document.querySelector(".no-items");
 
 // Create template item programmatically instead of querying and removing
 const originalItem = document.createElement("div");
@@ -12,10 +13,8 @@ originalItem.innerHTML = `
 `;
 
 function checkNoItems() {
-  const items = document.querySelector(".item");
-  if (!items) {
-    noItems.hidden = false;
-  }
+  const items = document.querySelectorAll(".item");
+  noItems.hidden = items.length > 0;
 }
 /**
  * Saves all current to-do items to localStorage.
@@ -76,11 +75,9 @@ function loadItems() {
       button.addEventListener("click", () => completeItem(button));
       itemsContainer.appendChild(newItem);
     });
-
-    if (items.length > 0) {
-      noItems.hidden = true;
-    }
   }
+  // Move this outside the if block and use checkNoItems instead
+  checkNoItems();
 }
 
 /**
@@ -188,6 +185,14 @@ function handleKeyClick(event) {
   }
 }
 
+function deleteAllItems() {
+  if (window.confirm("Are you sure you would like to delete all items?")) {
+    const allItems = document.querySelectorAll(".item");
+    allItems.forEach((item) => item.remove());
+    noItems.hidden = false;
+  }
+}
+
 duplicateBtn.addEventListener("click", duplicateItem);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -195,7 +200,8 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// Replace the three separate event listeners with this single one
+deleteAllItemsButton.addEventListener("click", () => deleteAllItems());
+
 document.addEventListener("keydown", (event) => handleKeyClick(event));
 
 completedButtons.forEach((button) => {
@@ -203,8 +209,7 @@ completedButtons.forEach((button) => {
 });
 
 // Load items from localStorage when the page is loaded
-window.addEventListener("load", loadItems);
-
+document.addEventListener("DOMContentLoaded", loadItems);
 // Save items to localStorage whenever the items are updated
 const observer = new MutationObserver(saveItems);
 observer.observe(itemsContainer, { childList: true, subtree: true });
@@ -215,6 +220,3 @@ document.addEventListener("input", (event) => {
     saveItems();
   }
 });
-
-// Add this line at the end of your file to load items when the page opens
-document.addEventListener("DOMContentLoaded", loadItems);

@@ -16,7 +16,7 @@
   <body>
     <header><h1>To-Do List</h1></header>
     <main>
-      <div class="no-items">
+      <div class="no-items" hidden>
         <p>
           No items in your to-do list. To add items, press the button in the
           lower left or press "enter".
@@ -42,6 +42,10 @@
       <button type="button" id="new-item-button">
         <img src="plus-icon.svg" width="18" height="18" alt="plus icon" />
         New Item
+      </button>
+      <button type="button" id="trash-all-button">
+        <img src="trash-icon.svg" width="18" height="18" alt="trash icon" />
+        Delete All Items
       </button>
     </main>
     <script src="script.js"></script>
