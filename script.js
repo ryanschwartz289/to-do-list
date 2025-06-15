@@ -1,3 +1,4 @@
+//* Defining variables
 const completedButtons = document.querySelectorAll(".item-button");
 const itemsContainer = document.getElementById("items-container");
 const duplicateBtn = document.getElementById("new-item-button");
@@ -16,6 +17,9 @@ function checkNoItems() {
   const items = document.querySelectorAll(".item");
   noItems.hidden = items.length > 0;
 }
+
+//* Creating functions
+
 /**
  * Saves all current to-do items to localStorage.
  *
@@ -80,7 +84,7 @@ function loadItems() {
       });
     }
   } catch (e) {
-    console.warn("Could not access localStorage:", e);
+    window.alert("Could not access localStorage:", e);
   }
 
   checkNoItems(); // Always run this regardless of success or failure
@@ -111,10 +115,10 @@ function completeItem(button) {
     div.style.opacity = 0.5;
 
     if (input.value.trim() === "") {
-      // Blank textarea: delete immediately
+      // Blank input: delete immediately
       div.remove();
     } else {
-      // Non-blank textarea: wait 3 seconds before deleting
+      // Non-blank input: wait 2 seconds before deleting
       const timeoutId = setTimeout(() => {
         div.remove();
       }, 2000);
@@ -200,13 +204,14 @@ function deleteAllItems() {
   }
 }
 
+//* Adding event listeners
+
 duplicateBtn.addEventListener("click", duplicateItem);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     duplicateItem();
   }
 });
-
 deleteAllItemsButton.addEventListener("click", () => deleteAllItems());
 
 document.addEventListener("keydown", (event) => handleKeyClick(event));
