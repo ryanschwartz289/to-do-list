@@ -61,11 +61,10 @@ body {
   outline: none;
 }
 
-#new-item-button {
+#new-item-button,
+#trash-all-button {
   position: fixed; /* Change to fixed to keep it in place */
   bottom: 20px; /* Position from bottom instead of using top */
-  left: 1%;
-  /* transform: translate(-50%, 0); */
   display: flex;
   align-items: center;
   gap: 5px;
@@ -78,7 +77,15 @@ body {
   font-weight: bold;
   z-index: 1000; /* Ensure button stays on top */
   transform: scale(1.2);
+}
+#new-item-button {
+  left: 1%;
   transform-origin: bottom left;
+}
+
+#trash-all-button {
+  right: 1%;
+  transform-origin: bottom right;
 }
 
 #items-container {
@@ -124,30 +131,10 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 24pt;
+  font-size: 22pt;
   color: white;
   font-family: "Open Sans", Impact, Haettenschweiler, "Arial Narrow Bold",
     sans-serif;
-}
-
-#trash-all-button {
-  position: fixed; /* Change to fixed to keep it in place */
-  bottom: 20px; /* Position from bottom instead of using top */
-  right: 1%;
-  /* transform: translate(-50%, 0); */
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: red;
-  font-family: "Open Sans", Impact, Haettenschweiler, "Arial Narrow Bold",
-    sans-serif;
-  font-weight: bold;
-  z-index: 1000; /* Ensure button stays on top */
-  transform: scale(1.2);
-  transform-origin: bottom right;
 }
 
 /* Mobile-specific styles */
@@ -180,6 +167,7 @@ body {
     appearance: none; /* Standard property */
     margin: 0; /* Remove Safari default margins */
   }
+
   no-items {
     font-size: 18pt;
   }

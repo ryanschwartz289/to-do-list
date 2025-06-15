@@ -58,26 +58,32 @@ function saveItems() {
  * - `completeItem(button)`: Function to handle item completion logic
  */
 function loadItems() {
-  const savedItems = localStorage.getItem("todoItems");
-  if (savedItems) {
-    const items = JSON.parse(savedItems);
-    items.forEach((item) => {
-      const newItem = originalItem.cloneNode(true);
-      const input = newItem.querySelector("input");
-      const button = newItem.querySelector(".item-button");
+  try {
+    const savedItems = localStorage.getItem("todoItems");
 
-      input.value = item.text;
-      if (item.isCompleted) {
-        button.style.backgroundColor = "grey";
-        newItem.style.opacity = 0.5;
-      }
+    if (savedItems) {
+      const items = JSON.parse(savedItems);
+      items.forEach((item) => {
+        const newItem = originalItem.cloneNode(true);
+        const input = newItem.querySelector("input");
+        const button = newItem.querySelector(".item-button");
 
-      button.addEventListener("click", () => completeItem(button));
-      itemsContainer.appendChild(newItem);
-    });
+        input.value = item.text;
+
+        if (item.isCompleted) {
+          button.style.backgroundColor = "grey";
+          newItem.style.opacity = 0.5;
+        }
+
+        button.addEventListener("click", () => completeItem(button));
+        itemsContainer.appendChild(newItem);
+      });
+    }
+  } catch (e) {
+    console.warn("Could not access localStorage:", e);
   }
-  // Move this outside the if block and use checkNoItems instead
-  checkNoItems();
+
+  checkNoItems(); // Always run this regardless of success or failure
 }
 
 /**
@@ -190,6 +196,7 @@ function deleteAllItems() {
     const allItems = document.querySelectorAll(".item");
     allItems.forEach((item) => item.remove());
     noItems.hidden = false;
+    deleteAllItemsButton.blur();
   }
 }
 
