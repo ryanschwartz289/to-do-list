@@ -1,5 +1,4 @@
 //* Defining variables
-const completedButtons = document.querySelectorAll(".item-button");
 const itemsContainer = document.getElementById("items-container");
 const duplicateBtn = document.getElementById("new-item-button");
 const deleteAllItemsButton = document.getElementById("trash-all-button");
@@ -12,7 +11,11 @@ originalItem.innerHTML = `
   <button class="item-button" type="button" title="Mark Completed"></button>
   <input type="text" name="item" class="input" autocomplete="off"/>
 `;
-
+/**
+ * Checks if there are any items in the itemsContainer.
+ * If there are no items, it shows the "no items" message.
+ * Otherwise, it hides the message.
+ */
 function checkNoItems() {
   const items = document.querySelectorAll(".item");
   noItems.hidden = items.length > 0;
@@ -35,12 +38,18 @@ function checkNoItems() {
  *
  * Completion is determined by whether the item's button has a grey background.
  */
+
 function saveItems() {
-  const items = Array.from(document.querySelectorAll(".item")).map((item) => ({
-    text: item.querySelector("input").value,
-    isCompleted:
-      item.querySelector(".item-button").style.backgroundColor === "grey",
-  }));
+  const items = Array.from(document.querySelectorAll(".item"))
+    .filter(
+      (item) =>
+        item.querySelector("input") && item.querySelector(".item-button")
+    )
+    .map((item) => ({
+      text: item.querySelector("input").value,
+      isCompleted:
+        item.querySelector(".item-button").style.backgroundColor === "grey",
+    }));
   localStorage.setItem("todoItems", JSON.stringify(items));
 }
 
@@ -117,35 +126,53 @@ function completeItem(button) {
     if (input.value.trim() === "") {
       // Blank input: delete immediately
       div.remove();
+      checkNoItems();
+      saveItems(); // Add this line
     } else {
       // Non-blank input: wait 2 seconds before deleting
       const timeoutId = setTimeout(() => {
         div.remove();
+        checkNoItems();
+        saveItems(); // Add this line
       }, 2000);
 
       div.dataset.deleteTimeout = timeoutId;
     }
   }
-  checkNoItems();
-  saveItems(); // Add this line
 }
+// TODO: FIX THIS FOR DELETING ITEMS IN MIDDLE and add documentation
 
 /**
- * Deletes the last item with class `.item` if its input field is empty.
+ * Handles the deletion of an item when backspace is pressed on an empty input field.
+ * If there are items present (noItems is hidden):
+ * - Removes the parent element of the empty input field
+ * - Focuses on the previous input element if it exists
+ * - If no previous element exists but there are other items, focuses on the first item
+ * - Updates the "no items" display status
+ * - Saves the updated items list
+ * @function backspaceDeleteItem
+ * @returns {void}
  */
-function deleteLastItem() {
-  let allItems = document.querySelectorAll(".item");
-  const lastItem = allItems[allItems.length - 1];
-  if (lastItem && lastItem.querySelector("input").value === "") {
-    lastItem.remove();
+function backspaceDeleteItem() {
+  if (noItems.hidden) {
+    const currentElement = document.activeElement;
+    const allInputs = Array.from(document.querySelectorAll(".item input"));
+    const currentElementIndex = allInputs.indexOf(currentElement);
+    const prevElement = allInputs[currentElementIndex - 1];
+    console.log(currentElementIndex);
+    if (currentElement.value === "") {
+      currentElement.parentElement.remove();
+      if (prevElement) {
+        prevElement.focus({ preventScroll: true });
+      } else if (allInputs.length > 1) {
+        console.log("OK");
+        allInputs[1].focus({ preventScroll: true });
+      }
+    }
+
+    checkNoItems();
+    saveItems();
   }
-  allItems = document.querySelectorAll(".item");
-  const focusItem = allItems[allItems.length - 1];
-  if (focusItem) {
-    focusItem.querySelector("input").focus({ preventScroll: true });
-  }
-  checkNoItems();
-  saveItems(); // Add this line
 }
 
 /**
@@ -175,7 +202,7 @@ function duplicateItem() {
 function handleKeyClick(event) {
   switch (event.key) {
     case "Backspace":
-      deleteLastItem();
+      backspaceDeleteItem();
       break;
     case "ArrowUp":
     case "ArrowDown":
@@ -215,10 +242,6 @@ document.addEventListener("keydown", (event) => {
 deleteAllItemsButton.addEventListener("click", () => deleteAllItems());
 
 document.addEventListener("keydown", (event) => handleKeyClick(event));
-
-completedButtons.forEach((button) => {
-  button.addEventListener("click", () => completeItem(button));
-});
 
 // Load items from localStorage when the page is loaded
 document.addEventListener("DOMContentLoaded", loadItems);

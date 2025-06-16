@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 h1 {
   margin: 0;
   padding: 20px;
@@ -18,7 +22,7 @@ body {
   overflow: hidden;
   background-color: #282c34;
   position: absolute;
-  width: 100%; /* Add this to ensure full width */
+  width: 100%;
   height: 100%;
 }
 
@@ -30,15 +34,17 @@ body {
   background-color: transparent;
   cursor: pointer;
   margin-left: 10px;
+  transform: scale(0.75);
+  transform-origin: center;
 }
 
 .item {
   width: 100%;
   display: flex;
   gap: 10px;
-  align-items: center; /* Change from center to align at top when wrapped */
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px; /* optional spacing */
+  margin-bottom: 20px; /* optional spacing */
   transform: scale(1.5);
   transform-origin: top left;
   padding-top: 5px;
@@ -55,10 +61,12 @@ body {
   font-weight: bold;
   background-color: #282c34;
   color: white;
+  font-size: 12pt;
 }
 
 .input:focus {
   outline: none;
+  border-color: rgba(128, 128, 128, 1);
 }
 
 #new-item-button,
@@ -86,6 +94,11 @@ body {
 #trash-all-button {
   right: 1%;
   transform-origin: bottom right;
+}
+
+#new-item-button:hover,
+#trash-all-button:hover {
+  opacity: 0.85;
 }
 
 #items-container {
@@ -131,7 +144,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 22pt;
+  font-size: 2em;
   color: white;
   font-family: "Open Sans", Impact, Haettenschweiler, "Arial Narrow Bold",
     sans-serif;
