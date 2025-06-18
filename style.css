@@ -44,7 +44,7 @@ body {
   gap: 10px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px; /* optional spacing */
+  margin-bottom: 20px;
   transform: scale(1.5);
   transform-origin: top left;
   padding-top: 5px;
@@ -67,6 +67,7 @@ body {
 .input:focus {
   outline: none;
   border-color: rgba(128, 128, 128, 1);
+  border: none none solid none;
 }
 
 #new-item-button,
@@ -149,7 +150,7 @@ body {
   font-family: "Open Sans", Impact, Haettenschweiler, "Arial Narrow Bold",
     sans-serif;
 }
-
+/* TODO: Make width wider on mobile for no items */
 /* Mobile-specific styles */
 @media screen and (max-width: 768px) {
   #items-container {

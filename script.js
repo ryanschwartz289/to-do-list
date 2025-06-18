@@ -159,13 +159,11 @@ function backspaceDeleteItem() {
     const allInputs = Array.from(document.querySelectorAll(".item input"));
     const currentElementIndex = allInputs.indexOf(currentElement);
     const prevElement = allInputs[currentElementIndex - 1];
-    console.log(currentElementIndex);
     if (currentElement.value === "") {
       currentElement.parentElement.remove();
       if (prevElement) {
         prevElement.focus({ preventScroll: true });
       } else if (allInputs.length > 1) {
-        console.log("OK");
         allInputs[1].focus({ preventScroll: true });
       }
     }
@@ -196,7 +194,7 @@ function duplicateItem() {
   setTimeout(() => {
     clonedInput.focus({ preventScroll: true });
   }, 0);
-  saveItems(); // Add this line
+  saveItems();
 }
 
 function handleKeyClick(event) {
@@ -205,7 +203,7 @@ function handleKeyClick(event) {
       backspaceDeleteItem();
       break;
     case "ArrowUp":
-    case "ArrowDown":
+    case "ArrowDown": {
       event.preventDefault();
       const allInputs = Array.from(document.querySelectorAll(".input"));
       const currentInput = document.activeElement;
@@ -219,6 +217,7 @@ function handleKeyClick(event) {
 
       allInputs[newIndex].focus({ preventScroll: true });
       break;
+    }
   }
 }
 
